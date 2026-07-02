@@ -197,7 +197,7 @@ class BancoContato():
         print("Contato não encontrado")
 
     def pesquisar_contatos(self):
-        print("\n========== PESQUISAR CONTATO ==========")
+        print("\n========== PESQUISAR CONTATOS ==========")
 
         if len(self.contatos) == 0:
             print("Nenhum contato cadastrado.")
