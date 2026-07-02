@@ -229,4 +229,3 @@ class BancoContato():
 sistema = BancoContato()
 sistema.Login()
 sistema.Menu()
-
