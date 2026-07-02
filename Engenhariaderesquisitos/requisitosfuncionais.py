@@ -12,6 +12,8 @@ class BancoContato():
             print("1 - Cadastrar contato")
             print("2 - Listar contatos")
             print("3 - Editar contato")
+            print("4 - Excluir contato")
+            print("5 - Pesquisar contato")
             print("0 - Sair")
 
             opcao = input("\nEscolha uma opção: ")
@@ -25,6 +27,12 @@ class BancoContato():
             elif opcao == "3":
                 self.editar_contatos()
 
+            elif opcao == "4":
+                self.excluir_contatos()
+
+            elif opcao == "5":
+                self.pesquisar_contatos()
+                
             elif opcao == "0":
                 print("\nSistema encerrado.")
                 break
@@ -85,8 +93,14 @@ class BancoContato():
         if len(self.contatos) == 0:
             print("Nenhum contato cadastrado.")
             return
-    
-        for contato in self.contatos:
+        
+        # Sorted usado para organizar em ordem alfabética
+        contatos_ordenados = sorted(
+            self.contatos,
+            key=lambda contato: contato["Nome"].lower()
+        )
+
+        for contato in contatos_ordenados:
             print(f"""
     ID: {contato['ID']}
     Nome: {contato['Nome']}
@@ -103,6 +117,16 @@ class BancoContato():
             print("Faça um cadastro primeiro.")
             return
         
+        for contato in self.contatos:
+            print(f"""
+    ID: {contato['ID']}
+    Nome: {contato['Nome']}
+    Telefone: {contato['Telefone']}
+    Email: {contato['Email']}
+    Empresa: {contato['Empresa']}
+    ----------------------------------
+    """)
+            
         try:
             id_editar = int(input("Informe o ID do contato: "))
         except ValueError:
@@ -134,7 +158,73 @@ class BancoContato():
         
         print("\nContato não encontrado.")
         print("Cadastre o contato primeiro.")
+    
+    def excluir_contatos(self):
+        print("\n========== LISTA DE CADASTRADOS ==========")
         
+        if len(self.contatos) == 0:
+            print("Nenhum contato cadastrado.")
+            return
+        
+        for contato in self.contatos:
+            print(f"""
+    ID: {contato['ID']}
+    Nome: {contato['Nome']}
+    Telefone: {contato['Telefone']}
+    Email: {contato['Email']}
+    Empresa: {contato['Empresa']}
+    ----------------------------------
+    """)
+            
+        try:
+            id_excluir = int(input("Informe o ID do contato: "))
+        except ValueError:
+            print("ID inválido!")
+            return
+        
+        for contato in self.contatos:
+            if contato['ID'] == id_excluir:
+                print(f"\nContato encontrado!: {contato['Nome']}")
+
+                confirmar = input("Deseja realmente excluir? (S/N): ").upper()
+
+                if confirmar == "S":
+                    self.contatos.remove(contato)
+                    print("Contato excluído com sucesso!")
+                else:
+                    print("Exclusão concluída!")
+                return
+        print("Contato não encontrado")
+
+    def pesquisar_contatos(self):
+        print("\n========== PESQUISAR CONTATO ==========")
+
+        if len(self.contatos) == 0:
+            print("Nenhum contato cadastrado.")
+            return
+
+        pesquisa = input("Digite o nome, telefone ou e-mail: ").strip().lower()
+
+        encontrado = False
+
+        for contato in self.contatos:
+
+            if (pesquisa == contato["Nome"].lower() or
+                pesquisa == contato["Telefone"] or
+                pesquisa == contato["Email"].lower()):
+
+                print(f"""
+        ID: {contato['ID']}
+        Nome: {contato['Nome']}
+        Telefone: {contato['Telefone']}
+        Email: {contato['Email']}
+        Empresa: {contato['Empresa']}
+        ----------------------------------
+        """)
+                encontrado = True
+
+        if not encontrado:
+            print("\nNenhum contato encontrado.")
 
 sistema = BancoContato()
 sistema.Login()
