@@ -8,56 +8,68 @@ class SistemaSalao:
         self.agendamentos = []
 
     def cadastro_clientes(self):
-        nome = input("Nome: ").strip()
-        cpf = input("CPF: ").strip()
-        if cpf == "":
-            print("CPF obrigatório!")
-            return
+        while True:
+            nome = input("Nome: ").strip()
+            if not nome:
+                print("Preenchemento obrigatório!")
+                continue
+            cpf = input("CPF: ").strip()
+            if not cpf:
+                print("CPF obrigatório!")
+                continue
 
-        if any(cliente.cpf == cpf for cliente in self.clientes):
-            print("CPF já cadastrado!")
-            return
-        
-        telefone = input("Telefone: ").strip()
-        email = input("Email: ").strip()
-
-        if nome == "" or cpf == "" or telefone == "" or email == "":
-            print("Todos os campos são obrigatórios! ")
-            return
-        
-        cliente = Cliente(
-            nome,
-            cpf,
-            telefone,
-            email,
+            if any(cliente.cpf == cpf for cliente in self.clientes):
+                print("CPF já cadastrado!")
+                continue
             
-        )
+            telefone = input("Telefone: ").strip()
+            if not telefone:
+                print("Telefone é obrigatório!")
+                continue
 
-        self.clientes.append(cliente)
-        print("\nContato cadastrado com sucesso!")
+            email = input("Email: ").strip()
+            if not email:
+                print("Email é obrigatório!")
+                continue
+
+            cliente = Cliente(
+                nome,
+                cpf,
+                telefone,
+                email,
+                
+            )
+
+            self.clientes.append(cliente)
+            print("\nContato cadastrado com sucesso!")
+            break
 
     def cadastro_servicos(self):
-        nome = input("Nome do serviço: ").strip()
+        while True: 
+            nome = input("Nome do serviço: ").strip()
+            if not nome:
+                print("Nome do serviço é obrigatório!")
 
-        if any(servico.nome.lower() == nome.lower() for servico in self.servicos):
-            print("Esse serviço já está cadastrado!")
-            return
+            if any(servico.nome.lower() == nome.lower() for servico in self.servicos):
+                print("Esse serviço já está cadastrado!")
+                continue
 
-        try:
-            valor = float(input("Valor: R$ ").replace(",", "."))
-            duracao = int(input("Duração (em minutos): "))
-        except ValueError:
-            print("Valor ou duração inválidos!")
-            return
+            try:
+                valor = float(input("Valor: R$ ").replace(",", "."))
+                duracao = int(input("Duração (em minutos): "))
+            except ValueError:
+                print("Valor ou duração inválidos!")
+                continue
 
-        if nome == "" or valor <= 0 or duracao <= 0:
-            print("Dados inválidos!")
-            return
+            if valor <= 0 or duracao <= 0:
+                print("Valor e Duração deve ser maior que zero!")
+                continue
 
-        servico = Servico(nome, valor, duracao)
-        self.servicos.append(servico)
+            servico = Servico(nome, valor, duracao)
+            self.servicos.append(servico)
 
-        print("Serviço cadastrado com sucesso!")
+            print("Serviço cadastrado com sucesso!")
+            break
 
     def agendar_servico(self):
         cpf = input("CPF do cliente: ").strip()
